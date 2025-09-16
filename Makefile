@@ -54,7 +54,7 @@ clean:
 		echo "$(RED) - $(COLOR) removed $(DIR_OBJ)"; \
 	fi
 
-fclean:
+fclean: clean
 	@if [ -d "$(DIR_DEP)" ]; then \
 		rm -rf $(DIR_DEP); \
 		echo "$(RED) - $(COLOR) removed $(DIR_DEP)"; \
