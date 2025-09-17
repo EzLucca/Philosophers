@@ -1,21 +1,21 @@
 
 #include "philo.h"
 
-static bool	ft_isdigit(int c)
+static inline bool	ft_isdigit(int c)
 {
 	if (c >= '0' && c <= '9')
 		return (true);
 	return (false);
 }
 
-static bool ft_isspace(int c)
+static inline bool ft_isspace(int c)
 {
 	if ((c >= '\t' && c <= '\r') || c == ' ')
 		return (true);
 	return (false);
 }
 
-static int	get_number(const char *nptr)
+static inline int	get_number(const char *nptr)
 {
 	long long	result;
 	size_t		i;
@@ -42,23 +42,33 @@ static int	get_number(const char *nptr)
 	return ((int)result);
 }
 
-bool	parse_input(t_data *data, char **argv)
+bool	check_args(char **argv)
+{
+	int nb;
+	int i;
+
+	nb = 0;
+	i = 1;
+	while (argv[i])
+	{
+		nb = get_number(argv[i]);
+		if (nb <= 0)
+			return (false);
+		else if (argv[1] && nb < 2)
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+void	parse_input(t_data *data, char **argv)
 {
 	data->n_philos = get_number(argv[1]);
-	if (data->n_philos == -1)
-		return (false);
 	data->time_to_die = get_number(argv[2]) * 1e3;
-	if (data->time_to_die == -1)
-		return (false);
 	data->time_to_eat = get_number(argv[3]) * 1e3;
-	if (data->time_to_eat == -1)
-		return (false);
 	data->time_to_sleep = get_number(argv[4]) * 1e3;
-	if (data->time_to_sleep == -1)
-		return (false);
 	if (argv[5])
 		data->cycle = get_number(argv[5]);
 	else
 		data->cycle = -1;
-	return (true);
 }

@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <unistd.h>
+# include <string.h>
 # include <sys/time.h>
 # include <limits.h>
 
@@ -46,9 +47,13 @@ typedef struct s_data
 } t_data;
 
 // parce.c
-bool	parse_input(t_data *data, char **argv);
+void	parse_input(t_data *data, char **argv);
+bool	check_args(char **argv);
+
+// init.c
+// void	init_data(t_data *data);
 
 // utils .c
-void	error_exit(char *error);
+// void	error(char *error);
 
 #endif // !PHILO_H

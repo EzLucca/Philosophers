@@ -13,7 +13,7 @@
 NAME		=	philo
 
 CC			=	cc
-CFLAGS		=	-Wall -Wextra -Werror -Wunreachable-code -O3
+CFLAGS		=	-g -Wall -Wextra -Werror -Wunreachable-code
 LFLAGS		=	-pthread
 MAKEFLAGS	+=	--no-print-directory
 RM			=	rm -rf
