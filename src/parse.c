@@ -1,17 +1,20 @@
 
 #include "philo.h"
 
-static inline bool	ft_isdigit(int c)
+static inline bool	digit_or_spaces(int c, int code)
 {
-	if (c >= '0' && c <= '9')
-		return (true);
-	return (false);
-}
-
-static inline bool ft_isspace(int c)
-{
-	if ((c >= '\t' && c <= '\r') || c == ' ')
-		return (true);
+	if (code == DIGITS)
+	{
+		if (c >= '0' && c <= '9')
+			return (true);
+		return (false);
+	}
+	if (code == ISSPACE)
+	{
+		if ((c >= '\t' && c <= '\r') || c == ' ')
+			return (true);
+		return (false);
+	}
 	return (false);
 }
 
@@ -24,7 +27,7 @@ static inline int	get_number(const char *nptr)
 	i = 0;
 	if (!*nptr)
 		return (-1);
-	while(ft_isspace(nptr[i]) == true)
+	while(digit_or_spaces(nptr[i], ISSPACE) == true)
 		i++;
 	if (nptr[i] == '+' || nptr[i] == '-')
 	{
@@ -32,7 +35,7 @@ static inline int	get_number(const char *nptr)
 			return (-1);
 		i++;
 	}
-	while (nptr[i] != '\0' && ft_isdigit(nptr[i]))
+	while (nptr[i] != '\0' && digit_or_spaces(nptr[i], DIGITS))
 	{
 		result = result * 10 + (nptr[i] - '0');
 		if (result > INT_MAX)
@@ -61,9 +64,12 @@ bool	check_args(char **argv)
 	return (true);
 }
 
-void	parse_input(t_data *data, char **argv)
+bool	parse_input(t_data *data, char **argv)
 {
-	data->n_philos = get_number(argv[1]);
+	int	i;
+
+	i = 0;
+	data->number_philos = get_number(argv[1]);
 	data->time_to_die = get_number(argv[2]) * 1e3;
 	data->time_to_eat = get_number(argv[3]) * 1e3;
 	data->time_to_sleep = get_number(argv[4]) * 1e3;
@@ -71,4 +77,15 @@ void	parse_input(t_data *data, char **argv)
 		data->cycle = get_number(argv[5]);
 	else
 		data->cycle = -1;
+	data->start_time = get_time();
+	data->stop_simulation = 0;
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->number_philos);
+	if(!data->forks)
+		return (false);
+	data->philo = malloc(sizeof(t_philo) * data->number_philos);
+	if (!data->philo)
+		return (false);
+	while(i++ < data->number_philos)
+		init_philo(&data->philo[i], data, i);
+	return (true);
 }
