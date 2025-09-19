@@ -25,8 +25,18 @@
 # define DIGITS 0
 # define ISSPACE 1
 
+
+
 typedef struct s_data t_data;
 typedef struct s_philo t_philo;
+
+typedef enum
+{
+	THINK,
+	EAT,
+	SLEEP,
+	DIE,
+} action;
 
 typedef struct s_philo
 {
@@ -55,16 +65,15 @@ typedef struct s_data
 
 /* ************************************************************************** */
 // parce.c
-bool	parse_input(t_data *data, char **argv);
+void	parse_input(t_data *data, char **argv);
 bool	check_args(char **argv);
 
 // init.c
-// void	init_data(t_data *data);
-void	init_philo(t_philo *philo, t_data *data, int i);
+bool	prepare_meal(t_data *data);
 
 // utils .c
-// void	error(char *error);
 void	input_msg(int code);
 long	get_time(void);
+void	clean_kitchen(t_data *data);
 
 #endif // !PHILO_H

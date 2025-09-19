@@ -56,19 +56,22 @@ bool	check_args(char **argv)
 	{
 		nb = get_number(argv[i]);
 		if (nb <= 0)
+		{
+			input_msg(1);
 			return (false);
+		}
 		else if (argv[1] && nb < 2)
+		{
+			input_msg(1);
 			return (false);
+		}
 		i++;
 	}
 	return (true);
 }
 
-bool	parse_input(t_data *data, char **argv)
+void	parse_input(t_data *data, char **argv)
 {
-	int	i;
-
-	i = 0;
 	data->number_philos = get_number(argv[1]);
 	data->time_to_die = get_number(argv[2]) * 1e3;
 	data->time_to_eat = get_number(argv[3]) * 1e3;
@@ -79,13 +82,4 @@ bool	parse_input(t_data *data, char **argv)
 		data->cycle = -1;
 	data->start_time = get_time();
 	data->stop_simulation = 0;
-	data->forks = malloc(sizeof(pthread_mutex_t) * data->number_philos);
-	if(!data->forks)
-		return (false);
-	data->philo = malloc(sizeof(t_philo) * data->number_philos);
-	if (!data->philo)
-		return (false);
-	while(i++ < data->number_philos)
-		init_philo(&data->philo[i], data, i);
-	return (true);
 }

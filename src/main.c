@@ -17,29 +17,25 @@ void	input_msg(int code)
 	}
 	if (code == 2)
 		printf("Malloc fail.\n");
+	if (code == 3)
+		printf("Mutex fail.\n");
 }
 
 int	main(int argc, char **argv)
 {
 	t_data		data;
 
-	if (argc != 5 && argc != 6)
+	if (argc == 5 || argc == 6)
 	{
-		input_msg(1);
-		return (1);
+		if (check_args(argv) == false)
+			return (2);
+		parse_input(&data, argv);
+		if (prepare_meal(&data) == false)
+			return (3);
+		// init_dinner();
+		clean_kitchen(&data);
+		return (0);
 	}
-	if (check_args(argv) == false)
-	{
-		input_msg(1);
-		return (1);
-	}
-	// init_data(&data);
-	if (parse_input(&data, argv) == false)
-	{
-		input_msg(2);
-		return (1);
-	}
-	// init_dinner();
-	// clean_kitchen();
-	return (0);
+	input_msg(1);
+	return (1);
 }

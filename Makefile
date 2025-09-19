@@ -28,6 +28,8 @@ INCS		=$(addprefix -I , \
 SRC			=	$(addprefix $(DIR_SRC), \
 				main.c \
 				parse.c \
+				event.c \
+				init.c \
 				utils.c)
 
 OBJ			=	$(patsubst $(DIR_SRC)%.c, $(DIR_OBJ)%.o, $(SRC))
