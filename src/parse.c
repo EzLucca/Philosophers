@@ -18,7 +18,7 @@ static inline bool	digit_or_spaces(int c, int code)
 	return (false);
 }
 
-static inline int	get_number(const char *nptr)
+static inline long	get_number(const char *nptr)
 {
 	long long	result;
 	size_t		i;
@@ -38,10 +38,12 @@ static inline int	get_number(const char *nptr)
 	while (nptr[i] != '\0' && digit_or_spaces(nptr[i], DIGITS))
 	{
 		result = result * 10 + (nptr[i] - '0');
-		if (result > INT_MAX)
+		if (result > LONG_MAX)
 			return (-1);
 		i++;
 	}
+	if (nptr[i] != '\0')
+		return (-1);
 	return ((int)result);
 }
 
@@ -60,7 +62,7 @@ bool	check_args(char **argv)
 			input_msg(1);
 			return (false);
 		}
-		else if (argv[1] && nb < 2)
+		else if (i == 1 && nb < 2)
 		{
 			input_msg(1);
 			return (false);
@@ -73,9 +75,9 @@ bool	check_args(char **argv)
 void	parse_input(t_data *data, char **argv)
 {
 	data->number_philos = get_number(argv[1]);
-	data->time_to_die = get_number(argv[2]) * 1e3;
-	data->time_to_eat = get_number(argv[3]) * 1e3;
-	data->time_to_sleep = get_number(argv[4]) * 1e3;
+	data->time_to_die = get_number(argv[2]) * 1000;
+	data->time_to_eat = get_number(argv[3]) * 1000;
+	data->time_to_sleep = get_number(argv[4]) * 1000;
 	if (argv[5])
 		data->cycle = get_number(argv[5]);
 	else

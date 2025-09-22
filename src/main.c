@@ -21,6 +21,18 @@ void	input_msg(int code)
 		printf("Mutex fail.\n");
 }
 
+// Used for testing
+void print_data(t_data *data)
+{
+	printf("%ld\n", data->number_philos);
+	printf("%ld\n", data->time_to_die);
+	printf("%ld\n", data->time_to_eat);
+	printf("%ld\n", data->time_to_sleep);
+	printf("%ld\n", data->cycle);
+	printf("%ld\n", data->start_time);
+	printf("%d\n", data->stop_simulation);
+}
+
 int	main(int argc, char **argv)
 {
 	t_data		data;
@@ -30,12 +42,15 @@ int	main(int argc, char **argv)
 		if (check_args(argv) == false)
 			return (2);
 		parse_input(&data, argv);
+		print_data(&data); // TESTING:
 		if (prepare_meal(&data) == false)
 			return (3);
-		// init_dinner();
-		clean_kitchen(&data);
+		// start_dinner();
+		destroy_free_mutex(&data);
 		return (0);
 	}
 	input_msg(1);
 	return (1);
 }
+
+

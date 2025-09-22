@@ -1,11 +1,11 @@
 
 #include "philo.h"
 
-void	pick_fork()
+void	pick_forks()
 {
 }
 
-void	drop_fork()
+void	drop_forks()
 {
 }
 
@@ -13,7 +13,7 @@ void	deep_sleep()
 {
 }
 
-void	eat_buffet()
+void	eat_meal()
 {
 }
 

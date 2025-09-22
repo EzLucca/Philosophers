@@ -52,13 +52,14 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	int					number_philos;
-	int					time_to_die;
-	int					time_to_eat;
-	int					time_to_sleep;
-	int					cycle;
+	long				number_philos;
+	long				time_to_die;
+	long				time_to_eat;
+	long				time_to_sleep;
+	long				cycle;
 	long				start_time;
 	int					stop_simulation;
+	pthread_mutex_t		dinner_over; //protect access of stop_simulation
 	pthread_mutex_t		*forks;
 	t_philo				*philo;
 } t_data;
@@ -74,6 +75,11 @@ bool	prepare_meal(t_data *data);
 // utils .c
 void	input_msg(int code);
 long	get_time(void);
-void	clean_kitchen(t_data *data);
+void	destroy_free_mutex(t_data *data);
 
+// dinner.c
+bool	start_dinner(t_data *data);
+
+//TESTING:
+void print_data(t_data *data);
 #endif // !PHILO_H

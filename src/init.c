@@ -36,10 +36,11 @@ static bool	init_mutexes_orders(t_data *data)
 	int i;
 
 	i = 0;
-	while(i++ < data->number_philos)
+	while(i < data->number_philos)
 	{
 		if(pthread_mutex_init(&data->forks[i], NULL) != 0)
 		{
+			destroy_free_mutex(data);
 			input_msg(3);
 			return (false);
 		}
@@ -59,6 +60,7 @@ static bool	init_data(t_data *data)
 	data->philo = malloc(sizeof(t_philo) * data->number_philos);
 	if (!data->philo)
 	{
+		free(data->forks);
 		input_msg(2);
 		return (false);
 	}
@@ -71,7 +73,7 @@ bool	prepare_meal(t_data *data)
 		return (false);
 	if (init_mutexes_orders(data) == false)
 	{
-		clean_kitchen(data);
+		destroy_free_mutex(data);
 		return (false);
 	}
 	init_philos(data);
