@@ -1,6 +1,48 @@
 
 #include "philo.h"
 
+static inline bool	digit_or_spaces(int c, int code);
+static inline long	get_number(const char *nptr);
+
+void	parse_input(t_data *data, char **argv)
+{
+	data->number_philos = get_number(argv[1]);
+	data->time_to_die = get_number(argv[2]) * 1000;
+	data->time_to_eat = get_number(argv[3]) * 1000;
+	data->time_to_sleep = get_number(argv[4]) * 1000;
+	if (argv[5])
+		data->cycle = get_number(argv[5]);
+	else
+		data->cycle = -1;
+	data->start_time = get_time();
+	data->stop_simulation = 0;
+}
+
+bool	check_args(char **argv)
+{
+	int nb;
+	int i;
+
+	nb = 0;
+	i = 1;
+	while (argv[i])
+	{
+		nb = get_number(argv[i]);
+		if (nb <= 0)
+		{
+			input_msg(1);
+			return (false);
+		}
+		else if (i == 1 && nb < 2)
+		{
+			input_msg(1);
+			return (false);
+		}
+		i++;
+	}
+	return (true);
+}
+
 static inline bool	digit_or_spaces(int c, int code)
 {
 	if (code == DIGITS)
@@ -45,43 +87,4 @@ static inline long	get_number(const char *nptr)
 	if (nptr[i] != '\0')
 		return (-1);
 	return ((int)result);
-}
-
-bool	check_args(char **argv)
-{
-	int nb;
-	int i;
-
-	nb = 0;
-	i = 1;
-	while (argv[i])
-	{
-		nb = get_number(argv[i]);
-		if (nb <= 0)
-		{
-			input_msg(1);
-			return (false);
-		}
-		else if (i == 1 && nb < 2)
-		{
-			input_msg(1);
-			return (false);
-		}
-		i++;
-	}
-	return (true);
-}
-
-void	parse_input(t_data *data, char **argv)
-{
-	data->number_philos = get_number(argv[1]);
-	data->time_to_die = get_number(argv[2]) * 1000;
-	data->time_to_eat = get_number(argv[3]) * 1000;
-	data->time_to_sleep = get_number(argv[4]) * 1000;
-	if (argv[5])
-		data->cycle = get_number(argv[5]);
-	else
-		data->cycle = -1;
-	data->start_time = get_time();
-	data->stop_simulation = 0;
 }

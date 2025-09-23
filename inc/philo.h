@@ -13,14 +13,14 @@
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <stdio.h>
+# include <limits.h>
 # include <pthread.h>
-# include <stdlib.h>
 # include <stdbool.h>
-# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
 # include <string.h>
 # include <sys/time.h>
-# include <limits.h>
+# include <unistd.h>
 
 # define DIGITS 0
 # define ISSPACE 1
@@ -79,6 +79,9 @@ void	destroy_free_mutex(t_data *data);
 
 // dinner.c
 bool	start_dinner(t_data *data);
+
+// checks.c
+bool	check_simulation(t_data *data);
 
 //TESTING:
 void print_data(t_data *data);

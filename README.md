@@ -28,6 +28,8 @@ Forks: Strong isolation. If one child crash the parent process continue.
 - Concurrency Model
 Threads: Best for tightly-coupled tasks that need shared state of resources.
 Forks: Better for isolated, independent tasks.
+Difference between Concurrency and parallelism
+```https://go.dev/blog/waza-talk```
 
 - Complexity
 Threads: require synchronization with mutexes, semaphores, condition variables
