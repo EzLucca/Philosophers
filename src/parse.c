@@ -15,7 +15,7 @@ void	parse_input(t_data *data, char **argv)
 	else
 		data->cycle = -1;
 	data->start_time = get_time();
-	data->stop_simulation = 0;
+	data->stop_simulation = false;
 }
 
 bool	check_args(char **argv)

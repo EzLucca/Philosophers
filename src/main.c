@@ -46,7 +46,7 @@ int	main(int argc, char **argv)
 		if (prepare_meal(&data) == false)
 			return (3);
 		// start_dinner();
-		destroy_free_mutex(&data);
+		destroy_free_mutex(&data, data.number_philos);
 		return (0);
 	}
 	input_msg(1);

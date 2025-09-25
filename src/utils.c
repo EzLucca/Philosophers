@@ -6,18 +6,14 @@ void	error_exit(char *error)
 	printf("%s\n", error);
 }
 
-void	destroy_free_mutex(t_data *data)
+void	destroy_free_mutex(t_data *data, int i)
 {
-	int i;
-
-	i = 0;
-	while (i < data->number_philos)
+	// while (i < data->number_philos)
+	while (i > 0)
 	{
 		if (pthread_mutex_destroy(&data->forks[i]) != 0)
-		{
 			input_msg(3);
-		}
-		i++;
+		i--;
 		free(data->forks);
 	}
 }

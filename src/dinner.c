@@ -1,6 +1,17 @@
 
 #include "philo.h"
 
+void	update_status(int philo_id, action state)
+{
+}
+
+void	check_simulation(t_data data)
+{
+	if (data->stop_simulation == true)
+		return (false);
+	return (true);
+}
+
 void	*routine(void *arg)
 {
 	t_philo *philo;
@@ -10,6 +21,9 @@ void	*routine(void *arg)
 	{
 		if (check_simulation(philo->data) == false) // TODO:
 			break ;
+		update_status(philo->id, THINK);
+		update_status(philo->id, EAT);
+		update_status(philo->id, SLEEP);
 		//think;
 		//pick_forks();
 		//eat_meal();
@@ -31,5 +45,6 @@ bool	start_dinner(t_data *data)
 		}
 		i++;
 	}
+	//pthread_join();
 	return (true);
 }

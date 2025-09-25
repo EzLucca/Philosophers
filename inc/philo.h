@@ -30,13 +30,13 @@
 typedef struct s_data t_data;
 typedef struct s_philo t_philo;
 
-typedef enum
+enum action
 {
 	THINK,
 	EAT,
 	SLEEP,
 	DIE,
-} action;
+};
 
 typedef struct s_philo
 {
@@ -58,7 +58,7 @@ typedef struct s_data
 	long				time_to_sleep;
 	long				cycle;
 	long				start_time;
-	int					stop_simulation;
+	bool				stop_simulation;
 	pthread_mutex_t		dinner_over; //protect access of stop_simulation
 	pthread_mutex_t		*forks;
 	t_philo				*philo;
@@ -75,7 +75,7 @@ bool	prepare_meal(t_data *data);
 // utils .c
 void	input_msg(int code);
 long	get_time(void);
-void	destroy_free_mutex(t_data *data);
+void	destroy_free_mutex(t_data *data, int i);
 
 // dinner.c
 bool	start_dinner(t_data *data);

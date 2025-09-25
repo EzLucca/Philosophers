@@ -11,10 +11,7 @@ bool	prepare_meal(t_data *data)
 	if (init_data(data) == false)
 		return (false);
 	if (init_mutexes_orders(data) == false)
-	{
-		destroy_free_mutex(data);
 		return (false);
-	}
 	init_philos(data);
 	return (true);
 }
@@ -58,7 +55,7 @@ static bool	init_mutexes_orders(t_data *data)
 	{
 		if(pthread_mutex_init(&data->forks[i], NULL) != 0)
 		{
-			destroy_free_mutex(data);
+			destroy_free_mutex(data, i);
 			input_msg(3);
 			return (false);
 		}
