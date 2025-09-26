@@ -53,13 +53,19 @@ static bool	init_mutexes_orders(t_data *data)
 	i = 0;
 	while(i < data->number_philos)
 	{
-		if(pthread_mutex_init(&data->forks[i], NULL) != 0)
+		if(pthread_mutex_init(&data->forks[i], NULL) != 0) //0 on success
 		{
 			destroy_free_mutex(data, i);
 			input_msg(3);
 			return (false);
 		}
 		i++;
+	}
+	if(pthread_mutex_init(&data->dinner_over, NULL) != 0) //0 on success
+	{
+		destroy_free_mutex(data, i);
+		input_msg(3);
+		return (false);
 	}
 	return (true);
 }

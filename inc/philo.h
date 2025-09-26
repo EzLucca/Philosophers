@@ -25,8 +25,6 @@
 # define DIGITS 0
 # define ISSPACE 1
 
-
-
 typedef struct s_data t_data;
 typedef struct s_philo t_philo;
 
