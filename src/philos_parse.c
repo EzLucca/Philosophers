@@ -18,7 +18,7 @@ void	parse_input(t_data *data, char **argv)
 	data->stop_simulation = false;
 }
 
-bool	check_args(char **argv)
+bool	validate_args(char **argv)
 {
 	int nb;
 	int i;

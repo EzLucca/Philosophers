@@ -26,11 +26,13 @@ DIR_DEP		=	dep/
 INCS		=$(addprefix -I , \
 				$(DIR_INC))
 SRC			=	$(addprefix $(DIR_SRC), \
-				main.c \
-				parse.c \
-				event.c \
-				init.c \
-				utils.c)
+				philos_checks.c \
+				philos_dinner.c \
+				philos_event.c \
+				philos_init.c \
+				philos_main.c \
+				philos_parse.c \
+				philos_utils.c)
 
 OBJ			=	$(patsubst $(DIR_SRC)%.c, $(DIR_OBJ)%.o, $(SRC))
 DEPS		=	$(patsubst $(DIR_SRC)%.c, $(DIR_DEP)%.d, $(SRC))

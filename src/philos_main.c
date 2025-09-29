@@ -39,7 +39,7 @@ int	main(int argc, char **argv)
 
 	if (argc == 5 || argc == 6)
 	{
-		if (check_args(argv) == false)
+		if (validate_args(argv) == false)
 			return (2);
 		parse_input(&data, argv);
 		print_data(&data); // TESTING:

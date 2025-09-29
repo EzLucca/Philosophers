@@ -31,9 +31,11 @@ typedef struct s_philo t_philo;
 enum action
 {
 	THINK,
+	FORK_TAKEN,
 	EAT,
 	SLEEP,
 	DIE,
+	STATE,
 };
 
 typedef struct s_philo
@@ -65,7 +67,7 @@ typedef struct s_data
 /* ************************************************************************** */
 // parce.c
 void	parse_input(t_data *data, char **argv);
-bool	check_args(char **argv);
+bool	validate_args(char **argv);
 
 // init.c
 bool	prepare_meal(t_data *data);

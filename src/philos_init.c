@@ -4,11 +4,11 @@
 static void	fork_assingment(t_data *data, int i);
 static void	init_philos(t_data *data);
 static bool	init_mutexes_orders(t_data *data);
-static bool	init_data(t_data *data);
+static bool	init_data_mallocs(t_data *data);
 
 bool	prepare_meal(t_data *data)
 {
-	if (init_data(data) == false)
+	if (init_data_mallocs(data) == false)
 		return (false);
 	if (init_mutexes_orders(data) == false)
 		return (false);
@@ -70,7 +70,7 @@ static bool	init_mutexes_orders(t_data *data)
 	return (true);
 }
 
-static bool	init_data(t_data *data)
+static bool	init_data_mallocs(t_data *data)
 {
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->number_philos);
 	if(!data->forks)
