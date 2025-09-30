@@ -13,7 +13,7 @@ void	parse_input(t_data *data, char **argv)
 	if (argv[5])
 		data->cycle = get_number(argv[5]);
 	else
-		data->cycle = -1;
+		data->cycle = INT_MAX;
 	data->start_time = get_time();
 	data->stop_simulation = false;
 }

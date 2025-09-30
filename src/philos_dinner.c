@@ -1,10 +1,9 @@
 
 #include "philo.h"
 
-void	update_status(int philo_id, action state)
+void	update_status(t_philo philo, action state)
 {
 	static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
-	static bool continue = TRUE;
 	char *status[STATE] = {
 		"is thinking.",	
 		"took a fork.",	
@@ -14,36 +13,29 @@ void	update_status(int philo_id, action state)
 	};
 
 	pthread_mutex_lock(&lock);
-
+	printf("%-4ld, philo %d %s\n.", get_time() - philo->data->start_time, philo->id, status[state]);
 	pthread_mutex_unlock(&lock);
-}
-
-void	check_simulation(t_data data)
-{
-	if (data->stop_simulation == true)
-		return (false);
-	return (true);
 }
 
 void	*routine(void *arg)
 {
 	t_philo *philo;
+	int	i;
 
+	i = 0;
 	philo = (t_philo *)arg;
-	while (1)
+	while (philo->data->stop_simulation == false && i <= philo->data->cycle)
 	{
-		if (check_simulation(philo->data->stop_simulation) == false) // TODO:
-			break ;
-		update_status(philo->id, THINK);
-		if (check_simulation(philo->data->stop_simulation) == false) // TODO:
-			break ;
-		update_status(philo->id, FORK_TAKEN);
-		if (check_simulation(philo->data->stop_simulation) == false) // TODO:
-			break ;
-		update_status(philo->id, EAT);
-		if (check_simulation(philo->data->stop_simulation) == false) // TODO:
-			break ;
-		update_status(philo->id, SLEEP);
+		// if (check_simulation(philo->data->stop_simulation) == false) // TODO:
+		// 	break ;
+		update_status(philo, THINK);
+		update_status(philo, FORK_TAKEN);
+		update_status(philo, FORK_TAKEN);
+		if(check_death(philo) == false)
+			update_status(philo, DIE);
+		update_status(philo, EAT);
+		update_status(philo, SLEEP);
+		i++;
 	}
 }
 
@@ -56,10 +48,15 @@ bool	start_dinner(t_data *data)
 	{
 		if (pthread_create(&data->philo[i].thread_id, NULL, routine, data) != 0)
 		{
+			while (i--)
+				pthread_join(&data->philo[i].thread_id, NULL);
+			input_msg(4);
 			return (false);
 		}
 		i++;
 	}
-	//pthread_join();
+	i = 0;
+	while (i++ < data->number_philos)
+		pthread_join(&data->philo[i].thread_id, NULL);
 	return (true);
 }

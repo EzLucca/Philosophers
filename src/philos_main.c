@@ -19,6 +19,8 @@ void	input_msg(int code)
 		printf("Malloc fail.\n");
 	if (code == 3)
 		printf("Mutex fail.\n");
+	if (code == 4)
+		printf("Pthread creation fail.\n");
 }
 
 // Used for testing
@@ -45,7 +47,7 @@ int	main(int argc, char **argv)
 		print_data(&data); // TESTING:
 		if (prepare_meal(&data) == false)
 			return (3);
-		// start_dinner();
+		start_dinner(&data);
 		destroy_free_mutex(&data, data.number_philos);
 		return (0);
 	}

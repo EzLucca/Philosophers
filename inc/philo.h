@@ -81,7 +81,7 @@ void	destroy_free_mutex(t_data *data, int i);
 bool	start_dinner(t_data *data);
 
 // checks.c
-bool	check_simulation(t_data *data);
+bool	check_death(t_data *data, int i)
 
 //TESTING:
 void print_data(t_data *data);
