@@ -28,7 +28,7 @@
 typedef struct s_data t_data;
 typedef struct s_philo t_philo;
 
-enum action
+typedef enum action
 {
 	THINK,
 	FORK_TAKEN,
@@ -36,7 +36,7 @@ enum action
 	SLEEP,
 	DIE,
 	STATE,
-};
+} action;
 
 typedef struct s_philo
 {
@@ -59,7 +59,7 @@ typedef struct s_data
 	long				cycle;
 	long				start_time;
 	bool				stop_simulation;
-	pthread_mutex_t		dinner_over; //protect access of stop_simulation
+	pthread_mutex_t		*dinner_over; //protect access of stop_simulation
 	pthread_mutex_t		*forks;
 	t_philo				*philo;
 } t_data;
@@ -81,7 +81,11 @@ void	destroy_free_mutex(t_data *data, int i);
 bool	start_dinner(t_data *data);
 
 // checks.c
-bool	check_death(t_data *data, int i)
+bool	check_death(t_philo *philo);
+bool	check_status(t_philo *philo, action state);
+
+// event.c
+void	pick_forks(t_philo *philo, int deadline_time);
 
 //TESTING:
 void print_data(t_data *data);

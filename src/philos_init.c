@@ -65,7 +65,7 @@ static bool	init_mutexes_orders(t_data *data)
 		}
 		i++;
 	}
-	if(pthread_mutex_init(&data->dinner_over, NULL) != 0) //0 on success
+	if(pthread_mutex_init(data->dinner_over, NULL) != 0) //0 on success
 	{
 		destroy_free_mutex(data, i);
 		input_msg(3);
@@ -77,8 +77,13 @@ static bool	init_mutexes_orders(t_data *data)
 static bool	init_data_mallocs(t_data *data)
 {
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->number_philos);
+	if(!data->forks)
+	{
+		input_msg(2);
+		return (false);
+	}
 	data->dinner_over = malloc(sizeof(pthread_mutex_t));
-	if(!data->forks || !data->dinner_over)
+	if(!data->dinner_over)
 	{
 		free(data->forks);
 		input_msg(2);

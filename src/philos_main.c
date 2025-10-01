@@ -23,18 +23,6 @@ void	input_msg(int code)
 		printf("Pthread creation fail.\n");
 }
 
-// Used for testing
-void print_data(t_data *data)
-{
-	printf("%ld\n", data->number_philos);
-	printf("%ld\n", data->time_to_die);
-	printf("%ld\n", data->time_to_eat);
-	printf("%ld\n", data->time_to_sleep);
-	printf("%ld\n", data->cycle);
-	printf("%ld\n", data->start_time);
-	printf("%d\n", data->stop_simulation);
-}
-
 int	main(int argc, char **argv)
 {
 	t_data		data;
@@ -44,7 +32,6 @@ int	main(int argc, char **argv)
 		if (validate_args(argv) == false)
 			return (2);
 		parse_input(&data, argv);
-		print_data(&data); // TESTING:
 		if (prepare_meal(&data) == false)
 			return (3);
 		start_dinner(&data);
