@@ -11,9 +11,9 @@ void	parse_input(t_data *data, char **argv)
 	data->time_to_eat = get_number(argv[3]) * 1000;
 	data->time_to_sleep = get_number(argv[4]) * 1000;
 	if (argv[5])
-		data->cycle = get_number(argv[5]);
+		data->rounds_of_meal = get_number(argv[5]);
 	else
-		data->cycle = INT_MAX;
+		data->rounds_of_meal = INT_MAX;
 	data->start_time = get_time();
 	data->stop_simulation = false;
 }

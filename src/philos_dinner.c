@@ -4,7 +4,7 @@
 void	*routine(void *arg)
 {
 	t_philo *philo;
-	int	deadline_time;
+	long	deadline_time;
 
 	philo = (t_philo *)arg;
 	deadline_time = get_time() + philo->data->time_to_die;
@@ -18,14 +18,18 @@ void	*routine(void *arg)
 		}
 		pthread_mutex_unlock(philo->data->dinner_over);
 		check_status(philo, THINK);
-		pick_forks(philo, deadline_time);
-		check_status(philo, FORK_TAKEN);
-		check_status(philo, FORK_TAKEN);
+		if(pick_forks(philo, deadline_time) == true)
+		{
+			eat_or_sleep(philo, EAT);
+		}
 		if(check_death(philo) == false)
+		{
 			check_status(philo, DIE);
-		check_status(philo, EAT);
-		check_status(philo, SLEEP);
+			break ;
+		}
+		eat_or_sleep(philo, SLEEP);
 	}
+	printf("out of loop");
 	return (0);
 }
 
@@ -36,7 +40,7 @@ bool	start_dinner(t_data *data)
 	i = 0;
 	while (i < data->number_philos)
 	{
-		if (pthread_create(&data->philo[i].thread_id, NULL, routine, data) != 0)
+		if (pthread_create(&data->philo[i].thread_id, NULL, routine, &data->philo[i]) != 0)
 		{
 			while (i--)
 				pthread_join(data->philo[i].thread_id, NULL);
@@ -46,7 +50,11 @@ bool	start_dinner(t_data *data)
 		i++;
 	}
 	i = 0;
-	while (i++ < data->number_philos)
+	while (i < data->number_philos)
+	{
 		pthread_join(data->philo[i].thread_id, NULL);
+		printf("Join thread %d \n", i);
+		i++;
+	}
 	return (true);
 }

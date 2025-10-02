@@ -46,6 +46,7 @@ static void	init_philos(t_data *data)
 		data->philo[i].full = false;
 		data->philo[i].last_meal = data->start_time;
 		fork_assingment(data, i);
+		data->philo[i].data = data;
 		i++;
 	}
 }

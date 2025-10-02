@@ -56,7 +56,7 @@ typedef struct s_data
 	long				time_to_die;
 	long				time_to_eat;
 	long				time_to_sleep;
-	long				cycle;
+	long				rounds_of_meal;
 	long				start_time;
 	bool				stop_simulation;
 	pthread_mutex_t		*dinner_over; //protect access of stop_simulation
@@ -85,7 +85,8 @@ bool	check_death(t_philo *philo);
 bool	check_status(t_philo *philo, action state);
 
 // event.c
-void	pick_forks(t_philo *philo, int deadline_time);
+bool	pick_forks(t_philo *philo, long	deadline_time);
+void	eat_or_sleep(t_philo *philo, action status);
 
 //TESTING:
 void print_data(t_data *data);
