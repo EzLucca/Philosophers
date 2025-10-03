@@ -1,6 +1,8 @@
 
 #include "philo.h"
 
+static void	time_event(t_philo *philo, long time);
+
 bool	pick_forks(t_philo *philo, long	deadline_time)
 {
 	if (get_time() < deadline_time)
@@ -24,21 +26,6 @@ bool	pick_forks(t_philo *philo, long	deadline_time)
 	return (false);
 }
 
-void	time_event(t_philo *philo, long time)
-{
-	long	start;
-
-	start = get_time();
-	// printf("start: %ld\n", start);
-	while ((get_time() - start) < time)
-	{
-		// printf("start: %ld\n", start);
-		if (check_death(philo))
-			break ;
-		usleep(500);
-	}
-}
-
 void	eat_or_sleep(t_philo *philo, action status)
 {
 	if (status == EAT)
@@ -48,6 +35,8 @@ void	eat_or_sleep(t_philo *philo, action status)
 
 		if (philo->meals_count == philo->data->rounds_of_meal)
 			philo->full = true;
+		// printf("full: %d\n", philo->full);
+		// printf("%d meal count: %d\n",philo->id, philo->meals_count);
 		check_status(philo, EAT);
 		time_event(philo, philo->data->time_to_eat);
 		pthread_mutex_unlock(&philo->r_fork);
@@ -60,12 +49,15 @@ void	eat_or_sleep(t_philo *philo, action status)
 	}
 }
 
-// 	long	start;
-//
-// 	start = get_time();
-// 	while ((get_time() - start) < philo->data->time_to_eat)
-// 	{
-// 		if (check_end_flag(data))
-// 			break ;
-// 		usleep(500);
-// 	}
+static void	time_event(t_philo *philo, long time)
+{
+	long	start;
+
+	start = get_time();
+	while ((get_time() - start) < time)
+	{
+		if (check_death(philo) == false)
+			break ;
+		usleep(500);
+	}
+}

@@ -7,9 +7,9 @@ static inline long	get_number(const char *nptr);
 void	parse_input(t_data *data, char **argv)
 {
 	data->number_philos = get_number(argv[1]);
-	data->time_to_die = get_number(argv[2]) * 1000;
-	data->time_to_eat = get_number(argv[3]) * 1000;
-	data->time_to_sleep = get_number(argv[4]) * 1000;
+	data->time_to_die = get_number(argv[2]);
+	data->time_to_eat = get_number(argv[3]);
+	data->time_to_sleep = get_number(argv[4]);
 	if (argv[5])
 		data->rounds_of_meal = get_number(argv[5]);
 	else

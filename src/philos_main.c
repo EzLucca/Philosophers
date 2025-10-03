@@ -27,10 +27,8 @@ int	main(int argc, char **argv)
 {
 	t_data		data;
 
-	if (argc == 5 || argc == 6)
+	if ((argc == 5 || argc == 6) && validate_args(argv))
 	{
-		if (validate_args(argv) == false)
-			return (2);
 		parse_input(&data, argv);
 		if (prepare_meal(&data) == false)
 			return (3);

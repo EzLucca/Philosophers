@@ -20,16 +20,17 @@ void	*routine(void *arg)
 		check_status(philo, THINK);
 		if(pick_forks(philo, deadline_time) == true)
 		{
+			deadline_time = get_time() + philo->data->time_to_die;
 			eat_or_sleep(philo, EAT);
+			eat_or_sleep(philo, SLEEP);
 		}
 		if(check_death(philo) == false)
 		{
-			check_status(philo, DIE);
+			if (philo->full != true)
+				check_status(philo, DIE);
 			break ;
 		}
-		eat_or_sleep(philo, SLEEP);
 	}
-	printf("out of loop");
 	return (0);
 }
 
@@ -53,7 +54,7 @@ bool	start_dinner(t_data *data)
 	while (i < data->number_philos)
 	{
 		pthread_join(data->philo[i].thread_id, NULL);
-		printf("Join thread %d \n", i);
+		// printf("%d joined\n", data->philo[i].id);
 		i++;
 	}
 	return (true);
