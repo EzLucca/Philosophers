@@ -44,8 +44,8 @@ typedef struct s_philo
 	int					meals_count;
 	bool				full;
 	long				last_meal;
-	pthread_mutex_t		l_fork;
-	pthread_mutex_t		r_fork;
+	pthread_mutex_t		*l_fork;
+	pthread_mutex_t		*r_fork;
 	pthread_t			thread_id;
 	t_data				*data;
 } t_philo;
@@ -83,6 +83,7 @@ bool	start_dinner(t_data *data);
 // checks.c
 bool	check_death(t_philo *philo);
 bool	check_status(t_philo *philo, action state);
+bool	check_end(t_philo *philo);
 
 // event.c
 bool	pick_forks(t_philo *philo, long	deadline_time);

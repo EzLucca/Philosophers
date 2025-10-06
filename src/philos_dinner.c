@@ -5,33 +5,61 @@ void	*routine(void *arg)
 {
 	t_philo *philo;
 	long	deadline_time;
+	static bool death;
 
+	death = false;
 	philo = (t_philo *)arg;
 	deadline_time = get_time() + philo->data->time_to_die;
+	if (philo->data->number_philos == 1)
+	{
+		pthread_mutex_lock(philo->l_fork);
+		check_status(philo, FORK_TAKEN);
+		usleep(philo->data->time_to_die * 1000);
+		check_status(philo, DIE);
+		pthread_mutex_unlock(philo->l_fork);
+		return (NULL);
+	}
+	if (philo->id % 2 == 0)
+		usleep(1000);
 	while (true)
 	{
-		pthread_mutex_lock(philo->data->dinner_over);
-		if (philo->data->stop_simulation == true) // TODO:
-		{
-			pthread_mutex_unlock(philo->data->dinner_over);
+		if (check_end(philo) == true)
 			break ;
-		}
-		pthread_mutex_unlock(philo->data->dinner_over);
 		check_status(philo, THINK);
 		if(pick_forks(philo, deadline_time) == true)
 		{
 			deadline_time = get_time() + philo->data->time_to_die;
 			eat_or_sleep(philo, EAT);
-			eat_or_sleep(philo, SLEEP);
+		}
+		if (check_end(philo) == false && death == false)
+		{
+			if (philo->full != true)
+				eat_or_sleep(philo, SLEEP);
 		}
 		if(check_death(philo) == false)
 		{
-			if (philo->full != true)
+			if (philo->full != true && death == false)
+			{
 				check_status(philo, DIE);
+				death = true;
+			}
 			break ;
 		}
+		usleep(1000);
 	}
 	return (0);
+}
+
+bool	check_end(t_philo *philo)
+{
+	pthread_mutex_lock(philo->data->dinner_over);
+	if (philo->data->stop_simulation == true) // TODO:
+	{
+		pthread_mutex_unlock(philo->data->dinner_over);
+		return (true);
+	}
+	pthread_mutex_unlock(philo->data->dinner_over);
+	return (false);
 }
 
 bool	start_dinner(t_data *data)
@@ -54,7 +82,6 @@ bool	start_dinner(t_data *data)
 	while (i < data->number_philos)
 	{
 		pthread_join(data->philo[i].thread_id, NULL);
-		// printf("%d joined\n", data->philo[i].id);
 		i++;
 	}
 	return (true);

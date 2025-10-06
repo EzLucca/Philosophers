@@ -33,7 +33,7 @@ bool	validate_args(char **argv)
 			input_msg(1);
 			return (false);
 		}
-		else if (i == 1 && nb < 2)
+		else if (i == 1 && nb < 1)
 		{
 			input_msg(1);
 			return (false);

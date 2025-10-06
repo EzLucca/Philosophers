@@ -24,13 +24,13 @@ static void	fork_assingment(t_data *data, int i)
 {
 	if ((i + 1) % 2 == 0)
 	{
-		data->philo[i].l_fork = data->forks[i];
-		data->philo[i].r_fork = data->forks[(i + 1) % data->number_philos];
+		data->philo[i].l_fork = &data->forks[i];
+		data->philo[i].r_fork = &data->forks[(i + 1) % data->number_philos];
 	}
 	else
 	{
-		data->philo[i].l_fork = data->forks[(i + 1) % data->number_philos];
-		data->philo[i].r_fork = data->forks[i];
+		data->philo[i].l_fork = &data->forks[(i + 1) % data->number_philos];
+		data->philo[i].r_fork = &data->forks[i];
 	}
 }
 
