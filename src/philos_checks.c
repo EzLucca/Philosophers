@@ -11,27 +11,33 @@ bool	check_death(t_philo *philo)
 		pthread_mutex_lock(philo->data->dinner_over);
 		if (philo->data->stop_simulation == false)
 			philo->data->stop_simulation = true;
+		check_status(philo, DIE);
 		pthread_mutex_unlock(philo->data->dinner_over);
-		return (false);
+		return (true);
 	}
 	if (philo->full == true)
-		return (false);
-	return (true);
+		return (true);
+	return (false);
 }
 
 bool	check_status(t_philo *philo, action state)
 {
 	static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+	static bool should_print = true;
 	char *status[STATE] = {
-		"is thinking.",	
-		"has taken a fork.",	
-		"is eating.",	
-		"is sleeping.",	
-		"died."	
+		"is thinking",	
+		"has taken a fork",	
+		"is eating",	
+		"is sleeping",	
+		"died"	
 	};
 
 	pthread_mutex_lock(&lock);
-	printf("%ld, philo %d %s\n", get_time() - philo->data->start_time, philo->id, status[state]);
+	if (should_print)
+		printf("%ld %d %s\n", get_time() - philo->data->start_time,
+			philo->id, status[state]);
+	if (philo->data->stop_simulation)
+		should_print = false;
 	pthread_mutex_unlock(&lock);
 	return (true);
 }

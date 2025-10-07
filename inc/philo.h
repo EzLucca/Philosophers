@@ -87,7 +87,7 @@ bool	check_end(t_philo *philo);
 
 // event.c
 bool	pick_forks(t_philo *philo, long	deadline_time);
-void	eat_or_sleep(t_philo *philo, action status);
+bool	eat_or_sleep(t_philo *philo, action status);
 
 //TESTING:
 void print_data(t_data *data);

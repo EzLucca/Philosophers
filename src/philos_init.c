@@ -62,6 +62,7 @@ static bool	init_mutexes_orders(t_data *data)
 		{
 			destroy_free_mutex(data, i);
 			input_msg(3);
+			printf("forks");
 			return (false);
 		}
 		i++;
@@ -70,6 +71,7 @@ static bool	init_mutexes_orders(t_data *data)
 	{
 		destroy_free_mutex(data, i);
 		input_msg(3);
+		printf("dinner");
 		return (false);
 	}
 	return (true);

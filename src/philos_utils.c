@@ -3,10 +3,13 @@
 
 void	destroy_free_mutex(t_data *data, int i)
 {
+	// int err = 0;
 	while (i > 0)
 	{
+		// err = pthread_mutex_destroy(&data->forks[i]);
 		if (pthread_mutex_destroy(&data->forks[i]) != 0)
 			input_msg(3);
+		// printf("%d\n", err);
 		i--;
 	}
 	free(data->forks);

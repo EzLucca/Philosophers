@@ -37,35 +37,31 @@ SRC			=	$(addprefix $(DIR_SRC), \
 OBJ			=	$(patsubst $(DIR_SRC)%.c, $(DIR_OBJ)%.o, $(SRC))
 DEPS		=	$(patsubst $(DIR_SRC)%.c, $(DIR_DEP)%.d, $(SRC))
 
-GREEN		=	\033[1;32m
-RED			=	\033[1;31m
-YELLOW		=	\033[1;33m
-
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	@$(CC) $(CFLAGS) $(LFLAGS) -o $(NAME) $(OBJ)
-	@echo "Build $(GREEN)$(NAME) successfully!"
+	@echo "Build $(NAME) successfully!"
 
 $(DIR_OBJ)%.o: $(DIR_SRC)%.c
 	@mkdir -p $(dir $@) $(patsubst $(DIR_OBJ)%, $(DIR_DEP)%, $(dir $@))
 	@$(CC) $(CFLAGS) -c $< -o $@ -MMD -MP -MF $(patsubst $(DIR_OBJ)%.o, $(DIR_DEP)%.d, $@) $(INCS)
-	@echo "$(GREEN) + $(COLOR) compiling $@"
+	@echo "compiling $@"
 
 clean:
 	@if [ -d "$(DIR_OBJ)" ]; then \
 		rm -rf $(DIR_OBJ); \
-		echo "$(RED) - $(COLOR) removed $(DIR_OBJ)"; \
+		echo "removed $(DIR_OBJ)"; \
 	fi
 
 fclean: clean
 	@if [ -d "$(DIR_DEP)" ]; then \
 		rm -rf $(DIR_DEP); \
-		echo "$(RED) - $(COLOR) removed $(DIR_DEP)"; \
+		echo "removed $(DIR_DEP)"; \
 	fi
 	@if [ -e "$(NAME)" ]; then \
 		rm -f $(NAME); \
-		echo "$(RED) - $(COLOR) removed $(NAME)"; \
+		echo "removed $(NAME)"; \
 	fi
 
 re: fclean all
