@@ -59,6 +59,7 @@ typedef struct s_data
 	long				rounds_of_meal;
 	long				start_time;
 	bool				stop_simulation;
+	bool				using_forks;
 	pthread_mutex_t		*dinner_over; //protect access of stop_simulation
 	pthread_mutex_t		*forks;
 	t_philo				*philo;

@@ -31,11 +31,13 @@ bool	check_status(t_philo *philo, action state)
 		"is sleeping",	
 		"died"	
 	};
+	long	deadline_time;
 
+	deadline_time = get_time() + philo->data->time_to_die;
 	pthread_mutex_lock(&lock);
-	if (should_print)
+	if (should_print && get_time() < deadline_time)
 		printf("%ld %d %s\n", get_time() - philo->data->start_time,
-			philo->id, status[state]);
+				philo->id, status[state]);
 	if (philo->data->stop_simulation)
 		should_print = false;
 	pthread_mutex_unlock(&lock);

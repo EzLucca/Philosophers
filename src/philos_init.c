@@ -100,5 +100,6 @@ static bool	init_data_mallocs(t_data *data)
 		input_msg(2);
 		return (false);
 	}
+	data->using_forks = false;
 	return (true);
 }
