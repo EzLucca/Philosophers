@@ -42,7 +42,7 @@ void	*routine(void *arg)
 		while (no_death)
 		{
 			deadline_time = get_time() + philo->data->time_to_die;
-			printf("time:%ld deadline: %ld\n", get_time() - philo->data->start_time, deadline_time);
+			// printf("time:%ld deadline: %ld\n", get_time() - philo->data->start_time, deadline_time);
 			if (actions(philo, deadline_time) == false)
 			{
 				if (philo->full != true && no_death == true)

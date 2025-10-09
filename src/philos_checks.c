@@ -6,6 +6,12 @@ bool	check_death(t_philo *philo)
 	long	philo_is_death;
 
 	philo_is_death = get_time() - philo->last_meal;
+
+	// printf("time: %ld\nstart_time: %ld\nlast_meal: %ld\ntime_die: %ld\n", get_time(), philo->data->start_time, philo->last_meal, philo->data->time_to_die);
+	// printf("philo_is_death: %ld\ntime_die: %ld\n",
+			// philo_is_death,
+			// philo->data->time_to_die);
+
 	if (philo_is_death >= philo->data->time_to_die)
 	{
 		pthread_mutex_lock(philo->data->dinner_over);
