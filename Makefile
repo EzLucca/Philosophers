@@ -31,7 +31,9 @@ SRC			=	$(addprefix $(DIR_SRC), \
 				philos_event.c \
 				philos_init.c \
 				philos_main.c \
+				philos_monitor.c \
 				philos_parse.c \
+				philos_routine.c \
 				philos_utils.c)
 
 OBJ			=	$(patsubst $(DIR_SRC)%.c, $(DIR_OBJ)%.o, $(SRC))

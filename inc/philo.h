@@ -59,8 +59,8 @@ typedef struct s_data
 	long				rounds_of_meal;
 	long				start_time;
 	bool				stop_simulation;
-	bool				using_forks;
 	pthread_mutex_t		*dinner_over; //protect access of stop_simulation
+	pthread_mutex_t		*print; //protect access of stop_simulation
 	pthread_mutex_t		*forks;
 	t_philo				*philo;
 } t_data;
@@ -82,13 +82,16 @@ void	destroy_free_mutex(t_data *data, int i);
 bool	start_dinner(t_data *data);
 
 // checks.c
-bool	check_death(t_philo *philo);
+bool	check_death(t_data *data);
 bool	check_status(t_philo *philo, action state);
 bool	check_end(t_philo *philo);
 
 // event.c
 bool	pick_forks(t_philo *philo, long	deadline_time);
 bool	eat_or_sleep(t_philo *philo, action status);
+
+void	*philo_routine(void *arg);
+void	*monitor_routine(void *arg);
 
 //TESTING:
 void print_data(t_data *data);
