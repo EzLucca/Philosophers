@@ -10,16 +10,16 @@ bool	pick_forks(t_philo *philo, long	deadline_time)
 		if (philo->id % 2 == 0)
 		{
 			pthread_mutex_lock(philo->r_fork);
-			check_status(philo, FORK_TAKEN);
+			print_status(philo, FORK_TAKEN);
 			pthread_mutex_lock(philo->l_fork);
-			check_status(philo, FORK_TAKEN);
+			print_status(philo, FORK_TAKEN);
 		}
 		else
 		{
 			pthread_mutex_lock(philo->l_fork);
-			check_status(philo, FORK_TAKEN);
+			print_status(philo, FORK_TAKEN);
 			pthread_mutex_lock(philo->r_fork);
-			check_status(philo, FORK_TAKEN);
+			print_status(philo, FORK_TAKEN);
 		}
 		return (true);
 	}
@@ -34,18 +34,20 @@ bool	eat_or_sleep(t_philo *philo, action status)
 		philo->meals_count += 1;
 		if (philo->meals_count == philo->data->rounds_of_meal)
 			philo->full = true;
-		check_status(philo, EAT);
+		// print_philo(philo);
+		print_status(philo, EAT);
 		// printf("test1: %ld\n", philo->data->time_to_eat);
 		time_event(philo, philo->data->time_to_eat);
-		printf("test2\n");
+		// printf("test2\n");
 		pthread_mutex_unlock(philo->r_fork);
 		pthread_mutex_unlock(philo->l_fork);
-		printf("release forks");
+		// printf("release forks\n");
+		// sleep(3);
 		return (true);
 	}
 	if (status == SLEEP)
 	{
-		check_status(philo, SLEEP);
+		print_status(philo, SLEEP);
 		time_event(philo, philo->data->time_to_sleep);
 		return (true);
 	}
@@ -58,13 +60,13 @@ static void	time_event(t_philo *philo, long time)
 
 	(void)philo;
 	start = get_time();
-	printf("time: %ld\n", start);
+	// printf("time: %ld\n", start);
 	while ((get_time() - start) < time)
 	{
 		// if (check_death(philo->data) == true)
 		// 	break ;
-		printf("time: %ld\n", start);
-		printf("test2\n");
+		// printf("time: %ld\n", start);
+		// printf("test3\n");
 		usleep(500);
 	}
 }

@@ -60,7 +60,7 @@ typedef struct s_data
 	long				start_time;
 	bool				stop_simulation;
 	pthread_mutex_t		*dinner_over; //protect access of stop_simulation
-	pthread_mutex_t		*print; //protect access of stop_simulation
+	// pthread_mutex_t		*print; //protect access of stop_simulation
 	pthread_mutex_t		*forks;
 	t_philo				*philo;
 } t_data;
@@ -91,8 +91,11 @@ bool	pick_forks(t_philo *philo, long	deadline_time);
 bool	eat_or_sleep(t_philo *philo, action status);
 
 void	*philo_routine(void *arg);
-void	*monitor_routine(void *arg);
+// void	*monitor_routine(void *arg);
+void	*monitor_routine(t_data *data);
+bool	print_status(t_philo *philo, action state);
 
 //TESTING:
 void print_data(t_data *data);
+void	print_philo(t_philo *philo);
 #endif // !PHILO_H

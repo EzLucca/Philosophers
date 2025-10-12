@@ -26,7 +26,6 @@ DIR_DEP		=	dep/
 INCS		=$(addprefix -I , \
 				$(DIR_INC))
 SRC			=	$(addprefix $(DIR_SRC), \
-				philos_checks.c \
 				philos_dinner.c \
 				philos_event.c \
 				philos_init.c \

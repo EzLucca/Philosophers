@@ -2,7 +2,7 @@
 #include "philo.h"
 
 static bool	single_philo(t_philo *philo);
-static bool	actions(t_philo *philo, long deadline_time);
+// static bool	actions(t_philo *philo, long deadline_time);
 
 void	*philo_routine(void *arg)
 {
@@ -14,15 +14,26 @@ void	*philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	if (single_philo(philo) == false)
 	{
-		while (no_death)
+		while (philo->data->stop_simulation != true)
 		{
 			deadline_time = get_time() + philo->data->time_to_die;
-			if (actions(philo, deadline_time) == false)
+
+			print_status(philo, THINK);
+			if(pick_forks(philo, deadline_time) == false)
+				return (false);
+			if(eat_or_sleep(philo, EAT) == false)
+				return (false);
+			if(eat_or_sleep(philo, SLEEP) == false)
+				return (false);
+
+			// if (actions(philo, deadline_time) == false)
+			// {
+			if (philo->full != true && no_death == true)
 			{
-				if (philo->full != true && no_death == true)
-					no_death = false;
+				no_death = false;
 				break ;
 			}
+			// }
 			usleep(1000);
 		}
 	}
@@ -34,9 +45,9 @@ static bool	single_philo(t_philo *philo)
 	if (philo->data->number_philos == 1)
 	{
 		pthread_mutex_lock(philo->l_fork);
-		check_status(philo, FORK_TAKEN);
+		print_status(philo, FORK_TAKEN);
 		usleep(philo->data->time_to_die * 1000);
-		check_status(philo, DIE);
+		print_status(philo, DIE);
 		pthread_mutex_unlock(philo->l_fork);
 		return (true);
 	}
@@ -45,14 +56,14 @@ static bool	single_philo(t_philo *philo)
 	return (false);
 }
 
-static bool	actions(t_philo *philo, long deadline_time)
-{
-	check_status(philo, THINK);
-	if(pick_forks(philo, deadline_time) == false)
-		return (false);
-	if(eat_or_sleep(philo, EAT) == false)
-		return (false);
-	if(eat_or_sleep(philo, SLEEP) == false)
-		return (false);
-	return (true);
-}
+// static bool	actions(t_philo *philo, long deadline_time)
+// {
+// 	print_status(philo, THINK);
+// 	if(pick_forks(philo, deadline_time) == false)
+// 		return (false);
+// 	if(eat_or_sleep(philo, EAT) == false)
+// 		return (false);
+// 	if(eat_or_sleep(philo, SLEEP) == false)
+// 		return (false);
+// 	return (true);
+// }
