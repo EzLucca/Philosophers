@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philos_init.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/13 19:03:05 by edlucca           #+#    #+#             */
+/*   Updated: 2025/10/13 19:05:19 by edlucca          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "philo.h"
 
 static void	fork_assingment(t_data *data, int i);
-static void	init_philos(t_data *data);
+static bool	init_philos(t_data *data);
 static bool	init_forks(t_data *data);
 static bool	init_mutexes(t_data *data);
 
@@ -11,24 +22,21 @@ bool	prepare_meal(t_data *data)
 	if (init_mutexes(data) == false)
 		return (false);
 	if (init_forks(data) == false)
-	{
-		free(data->forks);
-		free(data->philo);
 		return (false);
-	}
-	init_philos(data);
+	if (init_philos(data) == false)
+		return (false);
 	return (true);
 }
 
 static bool	init_mutexes(t_data *data)
 {
 	data->dinner_over = malloc(sizeof(pthread_mutex_t));
-	if(!data->dinner_over)
+	if (!data->dinner_over)
 	{
 		input_msg(2);
 		return (false);
 	}
-	if(pthread_mutex_init(data->dinner_over, NULL) != 0) //0 on success
+	if (pthread_mutex_init(data->dinner_over, NULL) != 0)
 	{
 		free(data->dinner_over);
 		input_msg(3);
@@ -39,20 +47,21 @@ static bool	init_mutexes(t_data *data)
 
 static bool	init_forks(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->number_philos);
-	if(!data->forks)
+	if (!data->forks)
 	{
 		input_msg(2);
 		return (false);
 	}
-	while(i < data->number_philos)
+	while (i < data->number_philos)
 	{
-		if(pthread_mutex_init(&data->forks[i], NULL) != 0) //0 on success
+		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
 		{
 			destroy_free_mutex(data, i);
+			free(data->dinner_over);
 			input_msg(3);
 			return (false);
 		}
@@ -61,7 +70,7 @@ static bool	init_forks(t_data *data)
 	return (true);
 }
 
-static void	init_philos(t_data *data)
+static bool	init_philos(t_data *data)
 {
 	int	i;
 
@@ -69,9 +78,9 @@ static void	init_philos(t_data *data)
 	data->philo = malloc(sizeof(t_philo) * data->number_philos);
 	if (!data->philo)
 	{
-		free(data->forks);
-		free(data->dinner_over);
+		destroy_free_mutex(data, i);
 		input_msg(2);
+		return (false);
 	}
 	while (i < data->number_philos)
 	{
@@ -83,6 +92,7 @@ static void	init_philos(t_data *data)
 		data->philo[i].data = data;
 		i++;
 	}
+	return (true);
 }
 
 static void	fork_assingment(t_data *data, int i)

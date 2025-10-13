@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philos_main.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/13 19:05:36 by edlucca           #+#    #+#             */
+/*   Updated: 2025/10/13 19:05:37 by edlucca          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "philo.h"
 
@@ -34,6 +45,7 @@ int	main(int argc, char **argv)
 			return (3);
 		start_dinner(&data);
 		destroy_free_mutex(&data, data.number_philos);
+		destroy_free_philos(&data);
 		return (0);
 	}
 	input_msg(1);

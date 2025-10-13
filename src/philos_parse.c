@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philos_parse.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/13 19:08:26 by edlucca           #+#    #+#             */
+/*   Updated: 2025/10/13 19:09:45 by edlucca          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "philo.h"
 
@@ -20,8 +31,8 @@ void	parse_input(t_data *data, char **argv)
 
 bool	validate_args(char **argv)
 {
-	int nb;
-	int i;
+	int	nb;
+	int	i;
 
 	nb = 0;
 	i = 1;
@@ -69,11 +80,11 @@ static inline long	get_number(const char *nptr)
 	i = 0;
 	if (!*nptr)
 		return (-1);
-	while(digit_or_spaces(nptr[i], ISSPACE) == true)
+	while (digit_or_spaces(nptr[i], ISSPACE) == true)
 		i++;
 	if (nptr[i] == '+' || nptr[i] == '-')
 	{
-		if(nptr[i] == '-')
+		if (nptr[i] == '-')
 			return (-1);
 		i++;
 	}

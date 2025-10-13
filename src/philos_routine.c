@@ -1,14 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philos_routine.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/13 19:02:04 by edlucca           #+#    #+#             */
+/*   Updated: 2025/10/13 19:04:05 by edlucca          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "philo.h"
 
 static bool	single_philo(t_philo *philo);
-// static bool	actions(t_philo *philo, long deadline_time);
 
 void	*philo_routine(void *arg)
 {
-	t_philo *philo;
-	long	deadline_time;
-	static bool no_death;
+	t_philo				*philo;
+	long				deadline_time;
+	static atomic_bool	no_death;
 
 	no_death = true;
 	philo = (t_philo *)arg;
@@ -17,23 +27,18 @@ void	*philo_routine(void *arg)
 		while (philo->data->stop_simulation != true)
 		{
 			deadline_time = get_time() + philo->data->time_to_die;
-
 			print_status(philo, THINK);
-			if(pick_forks(philo, deadline_time) == false)
+			if (pick_forks(philo, deadline_time) == false)
 				return (false);
-			if(eat_or_sleep(philo, EAT) == false)
+			if (eat_or_sleep(philo, EAT) == false)
 				return (false);
-			if(eat_or_sleep(philo, SLEEP) == false)
-				return (false);
-
-			// if (actions(philo, deadline_time) == false)
-			// {
-			if (philo->full != true && no_death == true)
+			if (check_full(philo) == true)
 			{
 				no_death = false;
 				break ;
 			}
-			// }
+			if (eat_or_sleep(philo, SLEEP) == false)
+				return (false);
 			usleep(1000);
 		}
 	}
@@ -55,15 +60,3 @@ static bool	single_philo(t_philo *philo)
 		usleep(1000);
 	return (false);
 }
-
-// static bool	actions(t_philo *philo, long deadline_time)
-// {
-// 	print_status(philo, THINK);
-// 	if(pick_forks(philo, deadline_time) == false)
-// 		return (false);
-// 	if(eat_or_sleep(philo, EAT) == false)
-// 		return (false);
-// 	if(eat_or_sleep(philo, SLEEP) == false)
-// 		return (false);
-// 	return (true);
-// }
