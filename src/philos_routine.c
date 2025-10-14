@@ -6,7 +6,7 @@
 /*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 19:02:04 by edlucca           #+#    #+#             */
-/*   Updated: 2025/10/13 19:04:05 by edlucca          ###   ########.fr       */
+/*   Updated: 2025/10/14 11:14:59 by edlucca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,11 @@ void	*philo_routine(void *arg)
 {
 	t_philo				*philo;
 	long				deadline_time;
-	static atomic_bool	no_death;
 
-	no_death = true;
 	philo = (t_philo *)arg;
 	if (single_philo(philo) == false)
 	{
-		while (philo->data->stop_simulation != true)
+		while (1)
 		{
 			deadline_time = get_time() + philo->data->time_to_die;
 			print_status(philo, THINK);
@@ -33,10 +31,7 @@ void	*philo_routine(void *arg)
 			if (eat_or_sleep(philo, EAT) == false)
 				return (false);
 			if (check_full(philo) == true)
-			{
-				no_death = false;
 				break ;
-			}
 			if (eat_or_sleep(philo, SLEEP) == false)
 				return (false);
 			usleep(1000);

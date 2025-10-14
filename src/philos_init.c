@@ -97,7 +97,7 @@ static bool	init_philos(t_data *data)
 
 static void	fork_assingment(t_data *data, int i)
 {
-	if ((i + 1) % 2 == 0)
+	if (i % 2 == 0)
 	{
 		data->philo[i].l_fork = &data->forks[i];
 		data->philo[i].r_fork = &data->forks[(i + 1) % data->number_philos];
@@ -108,3 +108,22 @@ static void	fork_assingment(t_data *data, int i)
 		data->philo[i].r_fork = &data->forks[i];
 	}
 }
+//
+// static void	assign_forks(t_program *program, t_philo *philo, int i)
+// {
+// 	int	left;
+// 	int	right;
+//
+// 	left = i;
+// 	right = (i + 1) % program->num_philos;
+// 	if (i % 2 == 0)
+// 	{
+// 		philo->fork[0] = &program->mtx_forks[left];
+// 		philo->fork[1] = &program->mtx_forks[right];
+// 	}
+// 	else
+// 	{
+// 		philo->fork[1] = &program->mtx_forks[left];
+// 		philo->fork[0] = &program->mtx_forks[right];
+// 	}
+// }

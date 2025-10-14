@@ -6,13 +6,14 @@
 /*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 18:56:38 by edlucca           #+#    #+#             */
-/*   Updated: 2025/10/13 19:00:22 by edlucca          ###   ########.fr       */
+/*   Updated: 2025/10/14 11:14:06 by edlucca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	satisfaction_philo(t_data *data, int i);
+static bool	satisfaction_philo(t_data *data, int i);
+static bool	check_death(t_data *data);
 
 void	*monitor_routine(t_data *data)
 {
@@ -26,7 +27,7 @@ void	*monitor_routine(t_data *data)
 	return (0);
 }
 
-bool	check_death(t_data *data)
+static bool	check_death(t_data *data)
 {
 	long	philo_is_death;
 	int		i;
@@ -40,7 +41,9 @@ bool	check_death(t_data *data)
 		{
 			print_status(&data->philo[i], DIE);
 			if (data->stop_simulation == false)
+			{
 				data->stop_simulation = true;
+			}
 			pthread_mutex_unlock(data->dinner_over);
 			return (true);
 		}
@@ -52,26 +55,31 @@ bool	check_death(t_data *data)
 	return (false);
 }
 
-bool	satisfaction_philo(t_data *data, int i)
+static bool	satisfaction_philo(t_data *data, int i)
 {
-	static atomic_int		full = 0;
+	static int		full = 0;
+	static pthread_mutex_t	lock = PTHREAD_MUTEX_INITIALIZER;
 
 	if (check_full(&data->philo[i]) == true)
 	{
+		pthread_mutex_lock(&lock);
 		full++;
 		if (full == data->number_philos)
 		{
 			pthread_mutex_unlock(data->dinner_over);
+			pthread_mutex_unlock(&lock);
 			return (true);
 		}
+		pthread_mutex_unlock(&lock);
 	}
 	return (false);
 }
 
-bool	print_status(t_philo *philo, action state)
+bool	print_status(t_philo *philo, t_action state)
 {
+	bool					should_print;
+	long					deadline_time;
 	static pthread_mutex_t	lock = PTHREAD_MUTEX_INITIALIZER;
-	atomic_bool				should_print;
 	static char				*status[STATE] = {
 		"is thinking",	
 		"has taken a fork",	
@@ -79,14 +87,13 @@ bool	print_status(t_philo *philo, action state)
 		"is sleeping",	
 		"died"	
 	};
-	long					deadline_time;
 
-	should_print = true;
 	deadline_time = get_time() + philo->data->time_to_die;
 	pthread_mutex_lock(&lock);
+	should_print = true;
 	if (philo->data->stop_simulation == false && get_time() < deadline_time)
 		printf("%ld %d %s\n", get_time() - philo->data->start_time,
-			philo->id, status[state]);
+				philo->id, status[state]);
 	if (philo->data->stop_simulation == true)
 		should_print = false;
 	pthread_mutex_unlock(&lock);

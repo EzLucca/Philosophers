@@ -6,7 +6,7 @@
 /*   By: edlucca <edlucca@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 11:59:31 by edlucca           #+#    #+#             */
-/*   Updated: 2025/10/13 19:12:52 by edlucca          ###   ########.fr       */
+/*   Updated: 2025/10/14 11:11:25 by edlucca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef enum action
 	SLEEP,
 	DIE,
 	STATE,
-}	action;
+}	t_action;
 
 typedef struct s_philo
 {
@@ -66,36 +66,35 @@ typedef struct s_data
 }	t_data;
 
 /* ************************************************************************** */
-// parce.c
+// philo_dinner.c
+bool	start_dinner(t_data *data);
+
+// philo_event.c
+bool	pick_forks(t_philo *philo, long deadline_time);
+bool	eat_or_sleep(t_philo *philo, t_action status);
+
+// philo_init.c
+bool	prepare_meal(t_data *data);
+
+// philo_main.c
+void	input_msg(int code);
+
+// philo_monitor.c
+void	*monitor_routine(t_data *data);
+bool	print_status(t_philo *philo, t_action state);
+bool	check_full(t_philo *philo);
+
+// philo_parse.c
 void	parse_input(t_data *data, char **argv);
 bool	validate_args(char **argv);
 
-// init.c
-bool	prepare_meal(t_data *data);
+// philo_routine.c
+void	*philo_routine(void *arg);
 
 // utils .c
-void	input_msg(int code);
 long	get_time(void);
 void	destroy_free_mutex(t_data *data, int i);
 void	destroy_free_philos(t_data *data);
-
-// dinner.c
-bool	start_dinner(t_data *data);
-
-// checks.c
-bool	check_death(t_data *data);
-bool	check_status(t_philo *philo, action state);
-bool	check_end(t_philo *philo);
-
-// event.c
-bool	pick_forks(t_philo *philo, long deadline_time);
-bool	eat_or_sleep(t_philo *philo, action status);
-
-void	*philo_routine(void *arg);
-// void	*monitor_routine(void *arg);
-void	*monitor_routine(t_data *data);
-bool	print_status(t_philo *philo, action state);
-bool	check_full(t_philo *philo);
 
 //TESTING:
 void	print_data(t_data *data);
