@@ -41,10 +41,10 @@ typedef enum action
 
 typedef struct s_philo
 {
-	int					id;
 	atomic_int			meals_count;
-	bool				full;
 	atomic_long			last_meal;
+	bool				full;
+	int					id;
 	pthread_mutex_t		*l_fork;
 	pthread_mutex_t		*r_fork;
 	pthread_t			thread_id;
@@ -53,48 +53,34 @@ typedef struct s_philo
 
 typedef struct s_data
 {
+	atomic_bool			stop_simulation;
 	long				number_philos;
+	long				rounds_of_meal;
+	long				start_time;
 	long				time_to_die;
 	long				time_to_eat;
 	long				time_to_sleep;
-	long				rounds_of_meal;
-	long				start_time;
-	atomic_bool			stop_simulation;
-	pthread_mutex_t		dinner_over; //protect access of stop_simulation
 	pthread_mutex_t		*forks;
+	pthread_mutex_t		dinner_over;
 	t_philo				*philo;
 }	t_data;
 
 /* ************************************************************************** */
-// philo_dinner.c
-bool	start_dinner(t_data *data);
 
-// philo_event.c
-bool	pick_forks(t_philo *philo, long deadline_time);
-bool	eat_or_sleep(t_philo *philo, t_action status);
-
-// philo_init.c
-bool	prepare_meal(t_data *data);
-
-// philo_main.c
-void	input_msg(int code);
-
-// philo_monitor.c
-void	*monitor_routine(t_data *data);
-bool	print_status(t_philo *philo, t_action state);
 bool	check_full(t_philo *philo);
-
-// philo_parse.c
-void	parse_input(t_data *data, char **argv);
+bool	check_simulation(t_philo *philo);
+bool	eat_or_sleep(t_philo *philo, t_action status);
+bool	pick_forks(t_philo *philo, long deadline_time);
+bool	prepare_meal(t_data *data);
+bool	print_status(t_philo *philo, t_action state);
+bool	start_dinner(t_data *data);
 bool	validate_args(char **argv);
-
-// philo_routine.c
-void	*philo_routine(void *arg);
-
-// utils .c
 long	get_time(void);
+void	*monitor_routine(t_data *data);
+void	*philo_routine(void *arg);
 void	destroy_free_mutex(t_data *data, int i);
 void	destroy_free_philos(t_data *data);
-bool	check_simulation(t_philo *philo);
+void	input_msg(int code);
+void	parse_input(t_data *data, char **argv);
 
 #endif // !PHILO_H
