@@ -13,7 +13,7 @@
 NAME		=	philo
 
 CC			=	cc
-CFLAGS		=	-g -Wall -Wextra -Werror -Wunreachable-code
+CFLAGS		=	-Wall -Wextra -Werror
 LFLAGS		=	-pthread
 MAKEFLAGS	+=	--no-print-directory
 RM			=	rm -rf
@@ -65,7 +65,7 @@ fclean: clean
 		echo "removed $(NAME)"; \
 	fi
 
-re: fclean all
+re: clean fclean all
 
 .PHONY: all clean fclean re
 .SECONDARY: $(OBJS) $(DEPS)
