@@ -27,13 +27,15 @@ void	*philo_routine(void *arg)
 			deadline_time = get_time() + philo->data->time_to_die;
 			print_status(philo, THINK);
 			if (pick_forks(philo, deadline_time) == false)
-				return (false);
+				return (0);
 			if (eat_or_sleep(philo, EAT) == false)
-				return (false);
+				return (0);
 			if (check_full(philo) == true)
-				break ;
+				return (0);
 			if (eat_or_sleep(philo, SLEEP) == false)
-				return (false);
+				return (0);
+			if (check_simulation(philo) == true)
+				return (0);
 			usleep(1000);
 		}
 	}
@@ -53,5 +55,17 @@ static bool	single_philo(t_philo *philo)
 	}
 	if (philo->id % 2 == 0)
 		usleep(1000);
+	return (false);
+}
+
+bool	check_simulation(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->dinner_over);
+	if (philo->data->stop_simulation == true)
+	{
+		pthread_mutex_unlock(&philo->data->dinner_over);
+		return (true);
+	}
+	pthread_mutex_unlock(&philo->data->dinner_over);
 	return (false);
 }

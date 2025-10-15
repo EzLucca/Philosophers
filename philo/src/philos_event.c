@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-static void	time_event(long time);
+static void	time_event(t_philo *philo, long time);
 static void	release_forks(t_philo *philo);
 
 bool	pick_forks(t_philo *philo, long deadline_time)
@@ -38,19 +38,19 @@ bool	eat_or_sleep(t_philo *philo, t_action status)
 		{
 			philo->full = true;
 			print_status(philo, EAT);
-			time_event(philo->data->time_to_eat);
+			time_event(philo, philo->data->time_to_eat);
 			release_forks(philo);
 			return (false);
 		}
 		print_status(philo, EAT);
-		time_event(philo->data->time_to_eat);
+		time_event(philo, philo->data->time_to_eat);
 		release_forks(philo);
 		return (true);
 	}
 	if (status == SLEEP)
 	{
 		print_status(philo, SLEEP);
-		time_event(philo->data->time_to_sleep);
+		time_event(philo, philo->data->time_to_eat);
 		return (true);
 	}
 	return (false);
@@ -62,11 +62,15 @@ static void	release_forks(t_philo *philo)
 	pthread_mutex_unlock(philo->l_fork);
 }
 
-static void	time_event(long time)
+static void	time_event(t_philo *philo, long time)
 {
 	long	start;
 
 	start = get_time();
 	while ((get_time() - start) < time)
+	{
+		if (check_simulation(philo) == true)
+			return ;
 		usleep(500);
+	}
 }

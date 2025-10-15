@@ -35,7 +35,7 @@ static bool	check_death(t_data *data)
 	i = 0;
 	while (i < data->number_philos)
 	{
-		pthread_mutex_lock(data->dinner_over);
+		pthread_mutex_lock(&data->dinner_over);
 		philo_is_death = get_time() - data->philo[i].last_meal;
 		if (philo_is_death >= data->time_to_die)
 		{
@@ -44,12 +44,12 @@ static bool	check_death(t_data *data)
 			{
 				data->stop_simulation = true;
 			}
-			pthread_mutex_unlock(data->dinner_over);
+			pthread_mutex_unlock(&data->dinner_over);
 			return (true);
 		}
 		if (satisfaction_philo(data, i) == true)
 			return (true);
-		pthread_mutex_unlock(data->dinner_over);
+		pthread_mutex_unlock(&data->dinner_over);
 		i++;
 	}
 	return (false);
@@ -57,7 +57,7 @@ static bool	check_death(t_data *data)
 
 static bool	satisfaction_philo(t_data *data, int i)
 {
-	static int		full = 0;
+	static int				full = 0;
 	static pthread_mutex_t	lock = PTHREAD_MUTEX_INITIALIZER;
 
 	if (check_full(&data->philo[i]) == true)
@@ -66,7 +66,7 @@ static bool	satisfaction_philo(t_data *data, int i)
 		full++;
 		if (full == data->number_philos)
 		{
-			pthread_mutex_unlock(data->dinner_over);
+			pthread_mutex_unlock(&data->dinner_over);
 			pthread_mutex_unlock(&lock);
 			return (true);
 		}
@@ -77,7 +77,7 @@ static bool	satisfaction_philo(t_data *data, int i)
 
 bool	print_status(t_philo *philo, t_action state)
 {
-	bool					should_print;
+	static bool				should_print = true;
 	long					deadline_time;
 	static pthread_mutex_t	lock = PTHREAD_MUTEX_INITIALIZER;
 	static char				*status[STATE] = {
@@ -90,12 +90,11 @@ bool	print_status(t_philo *philo, t_action state)
 
 	deadline_time = get_time() + philo->data->time_to_die;
 	pthread_mutex_lock(&lock);
-	should_print = true;
-	if (philo->data->stop_simulation == false && get_time() < deadline_time)
-		printf("%ld %d %s\n", get_time() - philo->data->start_time,
-				philo->id, status[state]);
 	if (philo->data->stop_simulation == true)
 		should_print = false;
+	if (should_print == true && get_time() < deadline_time)
+		printf("%ld %d %s\n", get_time() - philo->data->start_time,
+			philo->id, status[state]);
 	pthread_mutex_unlock(&lock);
 	return (true);
 }

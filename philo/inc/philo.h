@@ -26,8 +26,8 @@
 # define DIGITS 0
 # define ISSPACE 1
 
-typedef struct	s_data t_data;
-typedef struct	s_philo t_philo;
+typedef struct s_data	t_data;
+typedef struct s_philo	t_philo;
 
 typedef enum action
 {
@@ -57,10 +57,10 @@ typedef struct s_data
 	long				time_to_die;
 	long				time_to_eat;
 	long				time_to_sleep;
-	atomic_long			rounds_of_meal;
+	long				rounds_of_meal;
 	long				start_time;
 	atomic_bool			stop_simulation;
-	pthread_mutex_t		*dinner_over; //protect access of stop_simulation
+	pthread_mutex_t		dinner_over; //protect access of stop_simulation
 	pthread_mutex_t		*forks;
 	t_philo				*philo;
 }	t_data;
@@ -95,8 +95,6 @@ void	*philo_routine(void *arg);
 long	get_time(void);
 void	destroy_free_mutex(t_data *data, int i);
 void	destroy_free_philos(t_data *data);
+bool	check_simulation(t_philo *philo);
 
-//TESTING:
-void	print_data(t_data *data);
-void	print_philo(t_philo *philo);
 #endif // !PHILO_H

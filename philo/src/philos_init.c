@@ -30,15 +30,8 @@ bool	prepare_meal(t_data *data)
 
 static bool	init_mutexes(t_data *data)
 {
-	data->dinner_over = malloc(sizeof(pthread_mutex_t));
-	if (!data->dinner_over)
+	if (pthread_mutex_init(&data->dinner_over, NULL) != 0)
 	{
-		input_msg(2);
-		return (false);
-	}
-	if (pthread_mutex_init(data->dinner_over, NULL) != 0)
-	{
-		free(data->dinner_over);
 		input_msg(3);
 		return (false);
 	}
@@ -61,7 +54,6 @@ static bool	init_forks(t_data *data)
 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
 		{
 			destroy_free_mutex(data, i);
-			free(data->dinner_over);
 			input_msg(3);
 			return (false);
 		}
@@ -108,22 +100,3 @@ static void	fork_assingment(t_data *data, int i)
 		data->philo[i].r_fork = &data->forks[i];
 	}
 }
-//
-// static void	assign_forks(t_program *program, t_philo *philo, int i)
-// {
-// 	int	left;
-// 	int	right;
-//
-// 	left = i;
-// 	right = (i + 1) % program->num_philos;
-// 	if (i % 2 == 0)
-// 	{
-// 		philo->fork[0] = &program->mtx_forks[left];
-// 		philo->fork[1] = &program->mtx_forks[right];
-// 	}
-// 	else
-// 	{
-// 		philo->fork[1] = &program->mtx_forks[left];
-// 		philo->fork[0] = &program->mtx_forks[right];
-// 	}
-// }

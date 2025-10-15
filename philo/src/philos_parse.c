@@ -12,8 +12,8 @@
 
 #include "philo.h"
 
-static inline bool	digit_or_spaces(int c, int code);
-static inline long	get_number(const char *nptr);
+static bool	digit_or_spaces(int c, int code);
+static long	get_number(const char *nptr);
 
 void	parse_input(t_data *data, char **argv)
 {
@@ -54,7 +54,7 @@ bool	validate_args(char **argv)
 	return (true);
 }
 
-static inline bool	digit_or_spaces(int c, int code)
+static bool	digit_or_spaces(int c, int code)
 {
 	if (code == DIGITS)
 	{
@@ -71,7 +71,7 @@ static inline bool	digit_or_spaces(int c, int code)
 	return (false);
 }
 
-static inline long	get_number(const char *nptr)
+static long	get_number(const char *nptr)
 {
 	long long	result;
 	size_t		i;
