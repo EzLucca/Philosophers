@@ -50,7 +50,7 @@ bool	eat_or_sleep(t_philo *philo, t_action status)
 	if (status == SLEEP)
 	{
 		print_status(philo, SLEEP);
-		time_event(philo, philo->data->time_to_eat);
+		time_event(philo, philo->data->time_to_sleep);
 		return (true);
 	}
 	return (false);

@@ -31,13 +31,21 @@ bool	start_dinner(t_data *data)
 
 static bool	creation_of_pthreads(t_data *data, int i)
 {
+	int count;
+
+	count = 0;
 	while (i < data->number_philos)
 	{
-		if (pthread_create(&data->philo[i].thread_id, NULL, philo_routine
-				, &data->philo[i]) != 0)
+		if (i == 3 || pthread_create(&data->philo[i].thread_id, NULL, philo_routine
+					, &data->philo[i]) != 0)
 		{
-			while (i--)
-				pthread_join(data->philo[i].thread_id, NULL);
+			while (i > count)
+			{
+				data->stop_simulation = true;
+				if (pthread_join(data->philo[count].thread_id, NULL) != 0)
+					return (false);
+				count++;
+			}
 			input_msg(4);
 			return (false);
 		}

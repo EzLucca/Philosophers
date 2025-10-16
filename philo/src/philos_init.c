@@ -82,6 +82,7 @@ static bool	init_philos(t_data *data)
 		data->philo[i].last_meal = data->start_time;
 		fork_assingment(data, i);
 		data->philo[i].data = data;
+		data->philo[i].thread_id = 0;
 		i++;
 	}
 	return (true);
