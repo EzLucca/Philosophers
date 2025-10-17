@@ -24,7 +24,7 @@ void	parse_input(t_data *data, char **argv)
 	if (argv[5])
 		data->rounds_of_meal = get_number(argv[5]);
 	else
-		data->rounds_of_meal = INT_MAX;
+		data->rounds_of_meal = -1;
 	data->start_time = get_time();
 	data->stop_simulation = false;
 	data->start = false;
