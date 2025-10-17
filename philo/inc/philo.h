@@ -54,6 +54,7 @@ typedef struct s_philo
 typedef struct s_data
 {
 	atomic_bool			stop_simulation;
+	atomic_bool			start;
 	long				number_philos;
 	long				rounds_of_meal;
 	long				start_time;

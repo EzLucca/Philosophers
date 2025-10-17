@@ -31,13 +31,13 @@ bool	start_dinner(t_data *data)
 
 static bool	creation_of_pthreads(t_data *data, int i)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	while (i < data->number_philos)
 	{
-		if (i == 3 || pthread_create(&data->philo[i].thread_id, NULL, philo_routine
-					, &data->philo[i]) != 0)
+		if (pthread_create(&data->philo[i].thread_id, NULL, philo_routine
+				, &data->philo[i]) != 0)
 		{
 			while (i > count)
 			{
@@ -51,6 +51,7 @@ static bool	creation_of_pthreads(t_data *data, int i)
 		}
 		i++;
 	}
+	data->start = true;
 	monitor_routine(data);
 	return (true);
 }

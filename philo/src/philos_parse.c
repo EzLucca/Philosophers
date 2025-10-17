@@ -27,6 +27,7 @@ void	parse_input(t_data *data, char **argv)
 		data->rounds_of_meal = INT_MAX;
 	data->start_time = get_time();
 	data->stop_simulation = false;
+	data->start = false;
 }
 
 bool	validate_args(char **argv)

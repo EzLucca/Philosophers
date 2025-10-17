@@ -13,6 +13,7 @@
 #include "philo.h"
 
 static bool	single_philo(t_philo *philo);
+static void	set_starting(t_philo *philo);
 
 void	*philo_routine(void *arg)
 {
@@ -20,6 +21,7 @@ void	*philo_routine(void *arg)
 	long				deadline_time;
 
 	philo = (t_philo *)arg;
+	set_starting(philo);
 	if (single_philo(philo) == false)
 	{
 		while (1)
@@ -40,6 +42,24 @@ void	*philo_routine(void *arg)
 		}
 	}
 	return (0);
+}
+
+static void	set_starting(t_philo *philo)
+{
+	static pthread_mutex_t	start_line = PTHREAD_MUTEX_INITIALIZER;
+	bool					start;
+	bool					stop;
+
+	while (1)
+	{
+		usleep(100);
+		pthread_mutex_lock(&start_line);
+		start = philo->data->start;
+		stop = philo->data->stop_simulation;
+		pthread_mutex_unlock(&start_line);
+		if (start || stop)
+			break ;
+	}
 }
 
 static bool	single_philo(t_philo *philo)
