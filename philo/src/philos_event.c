@@ -33,7 +33,6 @@ bool	eat_or_sleep(t_philo *philo, t_action status)
 	if (status == EAT)
 	{
 		philo->last_meal = get_time();
-		philo->meals_count += 1;
 		if (philo->meals_count == philo->data->rounds_of_meal)
 		{
 			philo->full = true;
@@ -44,6 +43,7 @@ bool	eat_or_sleep(t_philo *philo, t_action status)
 		}
 		print_status(philo, EAT);
 		time_event(philo, philo->data->time_to_eat);
+		philo->meals_count += 1;
 		release_forks(philo);
 		return (true);
 	}
